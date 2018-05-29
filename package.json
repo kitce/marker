@@ -1,7 +1,7 @@
 {
   "name": "marker",
   "version": "1.0.0",
-  "description": "HKJC Mark Six records crawler",
+  "description": "HKJC Mark Six records scraper",
   "private": true,
   "author": "kitce",
   "license": "UNLICENSED",

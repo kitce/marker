@@ -1,5 +1,5 @@
 # marker
-HKJC Mark Six records crawler
+HKJC Mark Six records scraper
 ## Development
  - Copy `.env.example` as `.env`, modify as needed
 ```bash
