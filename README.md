@@ -17,12 +17,13 @@ yarn fetch
 ```
 #### Output exmaple
 ```bash
+yarn run v1.5.1
 $ node scripts/fetch.js
-1993-01-05, saved 93/001
-1993-01-07, saved 93/002
-1993-01-12, saved 93/003
-1993-01-14, saved 93/004
-1993-01-19, saved 93/005
+1993-01-05, saved 93/001 to 1993-01-05.json
+1993-01-07, saved 93/002 to 1993-01-07.json
+1993-01-12, saved 93/003 to 1993-01-12.json
+1993-01-14, saved 93/004 to 1993-01-14.json
+1993-01-19, saved 93/005 to 1993-01-19.json
 Successfully fetched 5 Mark Six records
 ```
 Records will be stored in `$RECORDS_DIRECTORY`.
@@ -51,6 +52,7 @@ yarn stats
 ```
 #### Output example
 ```bash
+yarn run v1.5.1
 $ node scripts/stats.js
 { numbers:
    [ { number: 9, count: 460, percentage: 0.136 },
