@@ -25,6 +25,25 @@ $ node scripts/fetch.js
 1993-01-19, saved 93/005
 Successfully fetched 5 Mark Six records
 ```
+Records will be stored in `$RECORDS_DIRECTORY`.
+### Sample data
+```json
+{
+  "date": "1993-01-05",
+  "number": "93/001",
+  "result": {
+    "extra": 33,
+    "numbers": [
+      1,
+      8,
+      13,
+      24,
+      35,
+      43
+    ]
+  }
+}
+```
 ### Show statistics
 ```bash
 yarn stats
