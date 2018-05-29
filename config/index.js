@@ -1,4 +1,3 @@
-const ms = require('ms');
 const path = require('path');
 const hkjc = require('./hkjc');
 
@@ -28,14 +27,6 @@ module.exports = {
   recordsDir : path.resolve(RECORDS_DIRECTORY),
   unavailableDatesFilePath : path.resolve(UNAVAILABLE_DATES_FILEPATH),
   firstMarkSixDate : FIRST_MARK_SIX_DATE,
-  retry : {
-    fetchResultsDetailPage : {
-      factor : 1.2, // default : 2
-      retries : 9, // maximum number of times to retry the operation
-      minTimeout : ms('1 second'), // minimum delay for the first retry, will be multiply by the 'factor' option
-      maxTimeout : ms('5 seconds') // maximum delay between two retries
-    }
-  },
   files : {
     jquery : './node_modules/jquery/dist/jquery.min.js',
     lodash : './node_modules/lodash/lodash.min.js',
