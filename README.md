@@ -15,7 +15,7 @@ yarn build
 ```bash
 yarn fetch
 ```
-#### Example output
+#### Output exmaple
 ```bash
 $ node scripts/fetch.js
 1993-01-05, saved 93/001
@@ -26,7 +26,7 @@ $ node scripts/fetch.js
 Successfully fetched 5 Mark Six records
 ```
 Records will be stored in `$RECORDS_DIRECTORY`.
-### Sample data
+#### Data example
 `1993-01-05.json`
 ```json
 {
@@ -49,7 +49,7 @@ Records will be stored in `$RECORDS_DIRECTORY`.
 ```bash
 yarn stats
 ```
-#### Example output
+#### Output example
 ```bash
 $ node scripts/stats.js
 { numbers:
