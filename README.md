@@ -11,7 +11,7 @@ Build the browser helper files
 yarn build
 ```
 ## Usage
-### Crawl the data
+### Fetch the records
 ```bash
 yarn fetch
 ```
@@ -27,6 +27,7 @@ Successfully fetched 5 Mark Six records
 ```
 Records will be stored in `$RECORDS_DIRECTORY`.
 ### Sample data
+`1993-01-05.json`
 ```json
 {
   "date": "1993-01-05",
