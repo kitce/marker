@@ -54,7 +54,8 @@ yarn stats
 ```bash
 yarn run v1.5.1
 $ node scripts/stats.js
-{ numbers:
+{ numDraws: 3368, 
+  numbers:
    [ { number: 9, count: 460, percentage: 0.136 },
      { number: 22, count: 459, percentage: 0.136 },
      { number: 33, count: 450, percentage: 0.133 }
