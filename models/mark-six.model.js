@@ -15,8 +15,25 @@ class MarkSix {
     this.result = data.result;
   }
 
+  /**
+   * Find all fetched records
+   * @return {Array<MarkSix>}
+   */
   static findAll () {
-    return readdirAsync(config.recordsDir).map(getMarkSix);
+    return readdirAsync(config.recordsDir)
+    .map(filename => this.get(filename));
+  }
+
+  /**
+   * Get a record by filename
+   * @param {String} filename
+   * @return {MarkSix}
+   */
+  static get (filename) {
+    const filePath = getFilePath(filename);
+    return readFileAsync(filePath)
+    .then(JSON.parse)
+    .then(data => this.init(data));
   }
 
   static init (data) {
@@ -64,19 +81,6 @@ class MarkSix {
 /**
  * Helper functions
  */
-/**
- * Get a Mark Six record by a given filename
- * @private
- * @param {String} filename
- * @return {MarkSix}
- */
-function getMarkSix (filename) {
-  const filePath = getFilePath(filename);
-  return readFileAsync(filePath)
-  .then(JSON.parse)
-  .then(data => MarkSix.init(data));
-}
-
 /**
  * Get the record file path
  * @private
