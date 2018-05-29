@@ -1,0 +1,6 @@
+*.DS_Store
+.env
+.idea/
+data/records/
+node_modules/
+*.log

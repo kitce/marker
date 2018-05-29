@@ -1,0 +1,44 @@
+{
+  "name": "marker",
+  "version": "1.0.0.",
+  "description": "HKJC Mark Six records crawler",
+  "private": true,
+  "author": "kitce",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=8.10.0",
+    "npm": ">=5.7.1",
+    "yarn": ">=1.5.1"
+  },
+  "scripts": {
+    "build": "node scripts/browserify.js",
+    "fetch": "node scripts/fetch.js",
+    "stats": "node scripts/stats.js",
+    "lint": "esw --color"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bluebird": "~3.5.1",
+    "browserify": "~16.2.2",
+    "cekit": "3.0.1",
+    "cheerio": "^1.0.0-rc.2",
+    "dotenv": "^5.0.1",
+    "jquery": "3.3.1",
+    "lodash": "4.17.10",
+    "moment": "2.22.1",
+    "ms": "2.1.1",
+    "nightmare": "3.0.1",
+    "retry": "~0.12.0",
+    "xml2js": "0.4.19"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "debug": "^3.1.0",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-watch": "^3.1.5",
+    "mocha": "5.1.1",
+    "uglify-es": "3.3.9"
+  }
+}
