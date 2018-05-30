@@ -71,3 +71,5 @@ $ node scripts/stats.js
 Not available
 ## License
 No license
+
+(All rights reserved)
