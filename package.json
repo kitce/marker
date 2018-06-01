@@ -20,7 +20,6 @@
     "axios": "^0.18.0",
     "bluebird": "~3.5.1",
     "browserify": "~16.2.2",
-    "cekit": "3.0.1",
     "cheerio": "^1.0.0-rc.2",
     "dotenv": "^5.0.1",
     "jquery": "3.3.1",
