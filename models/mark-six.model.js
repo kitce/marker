@@ -1,8 +1,8 @@
-const config = require('../config');
 const Promise = require('bluebird');
 const fs = require('fs');
 const _ = require('lodash');
 const path = require('path');
+const config = require('../config/config');
 
 const readdirAsync = Promise.promisify(fs.readdir);
 const readFileAsync = Promise.promisify(fs.readFile);
@@ -20,7 +20,7 @@ class MarkSix {
    * @return {Array<MarkSix>}
    */
   static findAll () {
-    return readdirAsync(config.recordsDir)
+    return readdirAsync(config.recordsDirectory)
     .map(filename => this.get(filename));
   }
 
@@ -88,7 +88,7 @@ class MarkSix {
  * @return {String}
  */
 function getFilePath (filename) {
-  return path.join(config.recordsDir, filename);
+  return path.join(config.recordsDirectory, filename);
 }
 
 module.exports = MarkSix;
