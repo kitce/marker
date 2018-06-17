@@ -26,8 +26,8 @@ $ node scripts/fetch.js
 1993-01-19, saved 93/005 to 1993-01-19.json
 Successfully fetched 5 Mark Six records
 ```
-Records will be stored in `$RECORDS_DIRECTORY`.
-#### Data example
+Records will be stored in `data/records/`.
+#### Record example
 `1993-01-05.json`
 ```json
 {
