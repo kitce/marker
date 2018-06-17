@@ -58,11 +58,11 @@ class MarkSix {
     this.result.numbers = _.sortBy(this.result.numbers);
   }
 
-  async save () {
+  save () {
     this.presave();
     const json = JSON.stringify(this, null, 2);
-    await writeFileAsync(this.filePath, json);
-    return this;
+    return writeFileAsync(this.filePath, json)
+    .then(() => this);
   }
 
   validate () {
