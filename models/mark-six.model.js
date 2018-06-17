@@ -17,7 +17,7 @@ class MarkSix {
 
   /**
    * Find all fetched records
-   * @return {Array<MarkSix>}
+   * @return {MarkSix[]}
    */
   static findAll () {
     return readdirAsync(config.recordsDirectory)
