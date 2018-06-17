@@ -1,2 +1,2 @@
 node_modules/
-*.browserified.js
+*.min.js

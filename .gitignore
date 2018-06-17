@@ -4,3 +4,4 @@
 data/records/
 node_modules/
 *.log
+*.min.js*
