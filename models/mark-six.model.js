@@ -17,7 +17,7 @@ class MarkSix {
 
   /**
    * Find all fetched records
-   * @return {MarkSix[]}
+   * @return {Promise<MarkSix[]>}
    */
   static findAll () {
     return readdirAsync(config.recordsDirectory)
@@ -27,7 +27,7 @@ class MarkSix {
   /**
    * Get a record by filename
    * @param {String} filename
-   * @return {MarkSix}
+   * @return {Promise<MarkSix>}
    */
   static get (filename) {
     const filePath = getFilePath(filename);
