@@ -10,14 +10,6 @@ HKJC Mark Six records scraper
 yarn install
 ```
 
-## Build
-
-Build the browser helper files
-
-```bash
-yarn build
-```
-
 ## Usage
 
 ### Fetch the records
