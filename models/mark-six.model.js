@@ -17,23 +17,27 @@ class MarkSix {
 
   /**
    * Find all fetched records
-   * @return {Promise<MarkSix[]>}
+   * @static
+   * @returns {Promise<MarkSix[]}
+   * @memberof MarkSix
    */
   static findAll () {
     return readdirAsync(config.recordsDirectory)
-    .map(filename => this.get(filename));
+      .map(filename => this.get(filename));
   }
 
   /**
    * Get a record by filename
+   * @static
    * @param {String} filename
    * @return {Promise<MarkSix>}
+   * @memberof MarkSix
    */
   static get (filename) {
     const filePath = getFilePath(filename);
     return readFileAsync(filePath)
-    .then(JSON.parse)
-    .then(data => this.init(data));
+      .then(JSON.parse)
+      .then(data => this.init(data));
   }
 
   static init (data) {
@@ -48,6 +52,10 @@ class MarkSix {
     return getFilePath(this.filename);
   }
 
+  get json () {
+    return JSON.stringify(this, null, 2);
+  }
+
   presave () {
     this.validate();
     this.sort();
@@ -60,9 +68,8 @@ class MarkSix {
 
   save () {
     this.presave();
-    const json = JSON.stringify(this, null, 2);
-    return writeFileAsync(this.filePath, json)
-    .then(() => this);
+    return writeFileAsync(this.filePath, this.json)
+      .then(() => this);
   }
 
   validate () {
