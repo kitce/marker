@@ -1,3 +1,3 @@
 module.exports = {
-  host : 'http://bet.hkjc.com'
+  host: 'http://bet.hkjc.com'
 };
