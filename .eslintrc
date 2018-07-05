@@ -45,7 +45,7 @@
     "key-spacing": [
       "warn",
       {
-        "beforeColon": true
+        "beforeColon": false
       }
     ],
     "no-console": [
