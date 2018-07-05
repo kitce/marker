@@ -8,7 +8,6 @@ const envVarsSchema = Joi.object({
   NODE_ENV: Joi.string()
     .allow(['development', 'production', 'test'])
     .default('development'),
-  SHOW_NIGHTMARE: Joi.boolean().default(false),
   USER_AGENT: Joi.string().default('Mozilla/5.0')
 }).unknown().required();
 
@@ -19,7 +18,6 @@ if (error) {
 
 const config = {
   env: envVars.NODE_ENV,
-  showNightmare: envVars.SHOW_NIGHTMARE,
   userAgent: envVars.USER_AGENT,
   dateFormat: 'YYYY-MM-DD',
   recordsDirectory: path.resolve('data/records'),
