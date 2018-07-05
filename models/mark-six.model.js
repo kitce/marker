@@ -11,8 +11,9 @@ const writeFileAsync = Promise.promisify(fs.writeFile);
 class MarkSix {
   constructor (data = {}) {
     this.date = data.date;
-    this.number = data.number;
-    this.result = data.result;
+    this.id = data.id;
+    this.numbers = data.numbers;
+    this.special = data.special;
   }
 
   /**
@@ -63,7 +64,7 @@ class MarkSix {
   }
 
   sort () {
-    this.result.numbers = _.sortBy(this.result.numbers);
+    this.numbers = _.sortBy(this.numbers);
   }
 
   save () {
@@ -73,13 +74,14 @@ class MarkSix {
   }
 
   validate () {
-    if (!this.date) throw new Error('missing draw date');
-    if (!this.number) throw new Error('missing draw number');
-    if (this.result.numbers.length !== 6) {
-      throw new Error(`expected 6 numbers but got ${this.result.numbers.length}`);
+    const {date, id, numbers, special} = this;
+    if (!date) throw new Error('missing draw date');
+    if (!id) throw new Error('missing draw number');
+    if (numbers.length !== 6) {
+      throw new Error(`expected 6 numbers but got ${numbers.length}`);
     }
-    if (!(this.result.extra && _.isNumber(this.result.extra))) {
-      throw new Error(`extra number should not be ${this.result.extra} (${typeof this.result.extra})`);
+    if (!(special && _.isNumber(special))) {
+      throw new Error(`special number should not be ${special} (${typeof special})`);
     }
     return this;
   }
