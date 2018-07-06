@@ -16,6 +16,8 @@ yarn install
 yarn build
 ```
 
+Compiled JavaScript files will be in `dist/`
+
 ## Usage
 
 ### Fetch the records
@@ -28,7 +30,7 @@ yarn fetch
 
 ```bash
 yarn run v1.7.0
-$ node scripts/fetch.js
+$ node dist/scripts/fetch.js
 1993-01-05, saved 93/001 to 1993-01-05.json
 1993-01-07, saved 93/002 to 1993-01-07.json
 1993-01-12, saved 93/003 to 1993-01-12.json
@@ -72,7 +74,7 @@ yarn stats
 
 ```bash
 yarn run v1.7.0
-$ node scripts/stats.js
+$ node dist/scripts/stats.js
 { total: 3384,
   numbers:
    [ { num: 9, count: 461, percentage: 0.136 },
