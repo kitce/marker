@@ -113,5 +113,5 @@ Temporary Items
 # Data
 data/records/
 
-# Helper files
-*.min.js*
+# Compiled JavaScript files
+*.js
