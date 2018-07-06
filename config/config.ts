@@ -1,6 +1,6 @@
-const Joi = require('joi');
-const mkdirp = require('mkdirp');
-const path = require('path');
+import Joi from 'joi';
+import mkdirp from 'mkdirp';
+import path from 'path';
 
 require('dotenv').config();
 
@@ -26,4 +26,4 @@ const config = {
 
 mkdirp.sync(config.recordsDirectory);
 
-module.exports = config;
+export default config;

@@ -1,16 +1,17 @@
-const Promise = require('bluebird');
-const fs = require('fs');
-const _ = require('lodash');
-const moment = require('moment');
-const config = require('../config/config');
-const fetchRecord = require('../lib/fetchRecord');
-const MarkSix = require('../models/mark-six.model');
+import Bluebird from 'bluebird';
+import {readdir, readFile, writeFile} from 'fs';
+import {map, concat, differenceBy} from 'lodash';
+import find from 'lodash/find';
+import moment, {Moment} from 'moment';
+import config from '../config/config';
+import fetchRecord from '../lib/fetchRecord';
+import MarkSix from '../models/mark-six.model';
 
 const debug = require('debug')('marker:script:fetch');
 
-const readdirAsync = Promise.promisify(fs.readdir);
-const readFileAsync = Promise.promisify(fs.readFile);
-const writeFileAsync = Promise.promisify(fs.writeFile);
+const readdirAsync: any = Bluebird.promisify(readdir);
+const readFileAsync: any = Bluebird.promisify(readFile);
+const writeFileAsync: any = Bluebird.promisify(writeFile);
 
 (async () => {
   try {
@@ -48,14 +49,13 @@ const writeFileAsync = Promise.promisify(fs.writeFile);
 /**
  * Get all known no draw dates
  * @private
- * @return {Promise<Moment[]>}
  */
-function getNoDrawDates () {
-  const parse = (json) => {
+function getNoDrawDates (): Bluebird<Moment[]> {
+  const parse = (json: string) => {
     const dates = JSON.parse(json);
-    return _.map(dates, date => moment(date));
+    return map(dates, date => moment(date));
   };
-  const error = (err) => {
+  const error = (err: NodeJS.ErrnoException) => {
     // return empty array if not found
     if (err.code === 'ENOENT') return [];
     throw err;
@@ -68,30 +68,25 @@ function getNoDrawDates () {
 /**
  * Get the dates of non fetched Mark Six, excluding the known no draw dates
  * @private
- * @param {Moment[]} noDrawDates
- * @return {Promise<Moment[]>}
  */
-function getMissingDates (noDrawDates) {
+function getMissingDates (noDrawDates: Moment[]): Bluebird<Moment[]> {
   // 1993-01-05 is the first Mark Six draw
   const start = moment('1993-01-05', config.dateFormat);
   const end = moment().startOf('day');
   return getFetchedDates()
-    .then((fetchedDates) => {
-      const unwanted = _.concat(noDrawDates, fetchedDates);
+    .then((fetchedDates: Moment[]) => {
+      const unwanted = concat(noDrawDates, fetchedDates);
       const datesSinceFirstDraw = getDatesBetween(start, end);
-      const comparator = date => date.unix();
-      return _.differenceBy(datesSinceFirstDraw, unwanted, comparator);
+      const comparator = (date: Moment) => date.unix();
+      return differenceBy(datesSinceFirstDraw, unwanted, comparator);
     });
 }
 
 /**
- * Get the dates between given start date and end date inclusively
+ * Get an array of the dates between start date and end date inclusively
  * @private
- * @param {Moment} start
- * @param {Moment} end
- * @return {Moment[]}
  */
-function getDatesBetween (start, end) {
+function getDatesBetween (start: Moment, end: Moment): Moment[] {
   const dates = [];
   const date = start.clone();
   while (date.isBefore(end)) {
@@ -104,24 +99,22 @@ function getDatesBetween (start, end) {
 /**
  * Get the list of fetched records' dates
  * @private
- * @return {Promise<Moment[]>}
  */
-function getFetchedDates () {
+function getFetchedDates (): Bluebird<Moment[]> {
   return readdirAsync(config.recordsDirectory)
-    .map(filename => MarkSix.get(filename))
-    .map(markSix => moment(markSix.date, config.dateFormat));
+    .map((filename: string) => {
+      const date = filename.split('.')[0];
+      return moment(date, config.dateFormat);
+    });
 }
 
 /**
  * Add the date to the list if not exist
  * *** This method will mutate `dates` ***
  * @private
- * @param {Moment[]} dates
- * @param {Moment} date
- * @return {Moment[]} `dates`
  */
-function addDate (dates, date) {
-  const _date = _.find(dates, _date => _date.isSame(date));
+function addDate (dates: Moment[], date: Moment): Moment[] {
+  const _date = find(dates, _date => _date.isSame(date));
   if (!_date) dates.push(date);
   return dates;
 }
@@ -129,11 +122,9 @@ function addDate (dates, date) {
 /**
  * Save the no draw dates list to file
  * @private
- * @param {Moment[]} dates
- * @return {Promise<void>}
  */
-function saveNoDrawDates (dates) {
-  const _dates = _.map(dates, date => date.format(config.dateFormat));
+function saveNoDrawDates (dates: Moment[]): Bluebird<void> {
+  const _dates = map(dates, date => date.format(config.dateFormat));
   const json = JSON.stringify(_dates, null, 2);
   return writeFileAsync(config.noDrawDatesFilepath, json);
 }

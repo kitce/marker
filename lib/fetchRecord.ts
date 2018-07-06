@@ -1,33 +1,35 @@
-const find = require('lodash/find');
-const toNumber = require('lodash/toNumber');
-const moment = require('moment');
-const getJSON = require('../apis/getJSON');
-const config = require('../config/config');
+import find from 'lodash/find';
+import toNumber from 'lodash/toNumber';
+import moment, {Moment} from 'moment';
+import getJSON, {GetJSON} from '../apis/getJSON';
+import config from '../config/config';
+import {IMarkSix} from '../models/mark-six.model';
 
 const debug = require('debug')('marker:lib:fetchRecord');
 
 const urlDateFormat = 'YYYYMMDD';
 const dataDateFormat = 'DD/MM/YYYY';
 
-const history = []; // cached query date ranges
+interface DateRange {
+  start: Moment;
+  end: Moment;
+}
 
-module.exports = async (date) => {
+const dateRanges: DateRange[] = []; // cached query date ranges
+
+export default async (date: Moment): Promise<IMarkSix | undefined> => {
   const query = getQuery(date);
   const entries = await getJSON(query);
-  const formattedDate = date.format(dataDateFormat);
-  const entry = find(entries, ({date}) => formattedDate === date);
+  const _date = date.format(dataDateFormat);
+  const entry = find(entries, ({date}) => _date === date);
   if (entry) return normalize(entry);
 };
 
 /**
- * Helper functions
- */
-/**
  * Get query by date
- * @param {Moment} date
- * @returns {Object} {sd : <String>, ed : <String>}
+ * @private
  */
-function getQuery (date) {
+function getQuery (date: Moment): GetJSON.Query {
   const {start, end} = getDateRange(date);
   return {
     sd: start.format(urlDateFormat),
@@ -36,12 +38,12 @@ function getQuery (date) {
 }
 
 /**
- * Get query date range, cache it if the range is new
- * @param {Moment} date
- * @returns {Object} {start : <Moment>, end : <Moment>}
+ * Get date range for query,
+ * cache it if the range is new
+ * @private
  */
-function getDateRange (date) {
-  const cached = find(history, ({start, end}) => {
+function getDateRange (date: Moment): DateRange {
+  const cached = find(dateRanges, ({start, end}) => {
     return date.isSameOrAfter(start) && date.isSameOrBefore(end);
   });
   if (cached) return cached;
@@ -50,18 +52,16 @@ function getDateRange (date) {
   // "Choose a search period of 3 months or less."
   const end = date.clone().add(3, 'months');
   const entry = {start: date, end};
-  history.push(entry);
+  dateRanges.push(entry);
   return entry;
 }
 
 /**
- * Normalize requested data entry into ready-to-save MarkSix object
+ * Normalize requested record into ready-to-save MarkSix object
  * @private
- * @param {Object} entry
- * @return {Object}
  */
-function normalize (entry) {
-  const {date, id, no, sno} = entry;
+function normalize (record: GetJSON.Record): IMarkSix {
+  const {date, id, no, sno} = record;
   return {
     date: moment(date, dataDateFormat).format(config.dateFormat),
     id,
