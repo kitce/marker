@@ -10,6 +10,12 @@ HKJC Mark Six records scraper
 yarn install
 ```
 
+## Build
+
+```bash
+yarn build
+```
+
 ## Usage
 
 ### Fetch the records
