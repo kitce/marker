@@ -75,16 +75,16 @@ yarn run v1.7.0
 $ node scripts/stats.js
 { total: 3384,
   numbers:
-   [ { number: 9, count: 461, percentage: 0.136 },
-     { number: 22, count: 460, percentage: 0.135 },
+   [ { num: 9, count: 461, percentage: 0.136 },
+     { num: 22, count: 460, percentage: 0.135 },
      { number: 33, count: 455, percentage: 0.134 },
      ... ],
-  special:
-   [ { number: 14, count: 94, percentage: 0.027 },
-     { number: 10, count: 89, percentage: 0.026 },
-     { number: 38, count: 83, percentage: 0.024 },
+  specials:
+   [ { num: 14, count: 94, percentage: 0.027 },
+     { num: 10, count: 89, percentage: 0.026 },
+     { num: 38, count: 83, percentage: 0.024 },
      ... ],
-  notInLast10: [ 4, 11, 14, 15, 19, 25, 26, 27, 36, 37, 43, 44, 47 ] }
+  numbersNotInLast10:: [ 4, 11, 14, 15, 19, 25, 26, 27, 36, 37, 43, 44, 47 ] }
 ✨  Done in 0.41s.
 ```
 
