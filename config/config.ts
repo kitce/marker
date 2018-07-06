@@ -1,8 +1,9 @@
+import dotenv from 'dotenv';
 import Joi from 'joi';
 import mkdirp from 'mkdirp';
 import path from 'path';
 
-require('dotenv').config();
+dotenv.config();
 
 const envVarsSchema = Joi.object({
   NODE_ENV: Joi.string()

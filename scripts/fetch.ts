@@ -1,13 +1,14 @@
 import Bluebird from 'bluebird';
+import _debug from 'debug';
 import {readdir, readFile, writeFile} from 'fs';
-import {map, concat, differenceBy} from 'lodash';
+import _ from 'lodash';
 import find from 'lodash/find';
 import moment, {Moment} from 'moment';
 import config from '../config/config';
 import fetchRecord from '../lib/fetchRecord';
 import MarkSix from '../models/mark-six.model';
 
-const debug = require('debug')('marker:script:fetch');
+const debug = _debug('marker:script:fetch');
 
 const readdirAsync: any = Bluebird.promisify(readdir);
 const readFileAsync: any = Bluebird.promisify(readFile);
@@ -18,8 +19,7 @@ const writeFileAsync: any = Bluebird.promisify(writeFile);
     const noDrawDates = await getNoDrawDates();
     const missingDates = await getMissingDates(noDrawDates);
     const markSixes = [];
-    for (let i = 0; i < missingDates.length; i++) {
-      const missingDate = missingDates[i];
+    for (const missingDate of missingDates) {
       const displayDate = missingDate.format(config.dateFormat);
       debug('fetching', displayDate);
       const data = await fetchRecord(missingDate);
@@ -53,7 +53,7 @@ const writeFileAsync: any = Bluebird.promisify(writeFile);
 function getNoDrawDates (): Bluebird<Moment[]> {
   const parse = (json: string) => {
     const dates = JSON.parse(json);
-    return map(dates, date => moment(date));
+    return _.map(dates, date => moment(date));
   };
   const error = (err: NodeJS.ErrnoException) => {
     // return empty array if not found
@@ -75,10 +75,10 @@ function getMissingDates (noDrawDates: Moment[]): Bluebird<Moment[]> {
   const end = moment().startOf('day');
   return getFetchedDates()
     .then((fetchedDates: Moment[]) => {
-      const unwanted = concat(noDrawDates, fetchedDates);
+      const unwanted = _.concat(noDrawDates, fetchedDates);
       const datesSinceFirstDraw = getDatesBetween(start, end);
       const comparator = (date: Moment) => date.unix();
-      return differenceBy(datesSinceFirstDraw, unwanted, comparator);
+      return _.differenceBy(datesSinceFirstDraw, unwanted, comparator);
     });
 }
 
@@ -124,7 +124,7 @@ function addDate (dates: Moment[], date: Moment): Moment[] {
  * @private
  */
 function saveNoDrawDates (dates: Moment[]): Bluebird<void> {
-  const _dates = map(dates, date => date.format(config.dateFormat));
+  const _dates = _.map(dates, date => date.format(config.dateFormat));
   const json = JSON.stringify(_dates, null, 2);
   return writeFileAsync(config.noDrawDatesFilepath, json);
 }

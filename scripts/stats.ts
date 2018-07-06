@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import MarkSix from '../models/mark-six.model';
 
-interface Accumulation {
-  number: number,
-  count: number,
-  percentage?: number
+interface IAccumulation {
+  num: number;
+  count: number;
+  percentage?: number;
 }
 
 const allNumbers = _.times(49, index => index + 1);
@@ -15,11 +15,11 @@ const allNumbers = _.times(49, index => index + 1);
     const total = markSixes.length;
     const drawnNumbers = _.flatMap(markSixes, 'numbers');
     const drawnSpecialNumbers = _.map(markSixes, 'special');
-    let accumulatedNumbers: Accumulation[] = [];
-    let accumulatedSpecialNumbers: Accumulation[] = [];
+    let accumulatedNumbers: IAccumulation[] = [];
+    let accumulatedSpecialNumbers: IAccumulation[] = [];
     // overall occurrence
-    _.each(drawnNumbers, (number) => accumulate(accumulatedNumbers, number));
-    _.each(drawnSpecialNumbers, (number) => accumulate(accumulatedSpecialNumbers, number));
+    _.each(drawnNumbers, num => accumulate(accumulatedNumbers, num));
+    _.each(drawnSpecialNumbers, num => accumulate(accumulatedSpecialNumbers, num));
     accumulatedNumbers = addPercentageAndSort(accumulatedNumbers, total);
     accumulatedSpecialNumbers = addPercentageAndSort(accumulatedSpecialNumbers, total);
     // numbers that do not exist in last 10 draws
@@ -40,20 +40,20 @@ const allNumbers = _.times(49, index => index + 1);
 /**
  * Helper functions
  */
-function accumulate (accumulations: Accumulation[], number: number): void {
-  const accumulation = _.find(accumulations, {number}) || {number, count: 0};
+function accumulate (accumulations: IAccumulation[], num: number): void {
+  const accumulation = _.find(accumulations, {num}) || {num, count: 0};
   if (accumulation.count === 0) accumulations.push(accumulation);
   accumulation.count++;
 }
 
-function addPercentage (total: number): (accumulation: Accumulation) => Accumulation {
-  return (accumulation) => {
+function addPercentage (total: number): (accumulation: IAccumulation) => IAccumulation {
+  return accumulation => {
     const percentage = _.floor(accumulation.count / total, 3);
     return {...accumulation, percentage};
-  }
+  };
 }
 
-function addPercentageAndSort (accumulations: Accumulation[], total: number) {
+function addPercentageAndSort (accumulations: IAccumulation[], total: number) {
   return _.chain(accumulations)
     .map(addPercentage(total))
     .sortBy('percentage')

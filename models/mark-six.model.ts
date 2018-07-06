@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import {readdir, readFile, writeFile, PathLike} from 'fs';
+import {readdir, readFile, writeFile} from 'fs';
 import _ from 'lodash';
 import path from 'path';
 import config from '../config/config';
@@ -103,6 +103,18 @@ class MarkSix implements IMarkSix {
   }
 
   /**
+   * Save the record to file system
+   *
+   * @returns {this}
+   * @memberof MarkSix
+   */
+  save (): this {
+    this.presave();
+    return writeFileAsync(this.filePath, this.json)
+      .then(() => this);
+  }
+
+  /**
    * Do something before saving
    *
    * @private
@@ -145,18 +157,6 @@ class MarkSix implements IMarkSix {
       throw new Error(`special number should not be ${special} (${typeof special})`);
     }
     return this;
-  }
-
-  /**
-   * Save the record to file system
-   *
-   * @returns {this}
-   * @memberof MarkSix
-   */
-  save (): this {
-    this.presave();
-    return writeFileAsync(this.filePath, this.json)
-      .then(() => this);
   }
 }
 

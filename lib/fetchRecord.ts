@@ -1,21 +1,22 @@
+import _debug from 'debug';
 import find from 'lodash/find';
 import toNumber from 'lodash/toNumber';
 import moment, {Moment} from 'moment';
-import getJSON, {GetJSON} from '../apis/getJSON';
+import getJSON, {IQuery, IRecord} from '../apis/getJSON';
 import config from '../config/config';
 import {IMarkSix} from '../models/mark-six.model';
 
-const debug = require('debug')('marker:lib:fetchRecord');
+const debug = _debug('marker:lib:fetchRecord');
 
 const urlDateFormat = 'YYYYMMDD';
 const dataDateFormat = 'DD/MM/YYYY';
 
-interface DateRange {
+interface IDateRange {
   start: Moment;
   end: Moment;
 }
 
-const dateRanges: DateRange[] = []; // cached query date ranges
+const dateRanges: IDateRange[] = []; // cached query date ranges
 
 export default async (date: Moment): Promise<IMarkSix | undefined> => {
   const query = getQuery(date);
@@ -29,7 +30,7 @@ export default async (date: Moment): Promise<IMarkSix | undefined> => {
  * Get query by date
  * @private
  */
-function getQuery (date: Moment): GetJSON.Query {
+function getQuery (date: Moment): IQuery {
   const {start, end} = getDateRange(date);
   return {
     sd: start.format(urlDateFormat),
@@ -42,7 +43,7 @@ function getQuery (date: Moment): GetJSON.Query {
  * cache it if the range is new
  * @private
  */
-function getDateRange (date: Moment): DateRange {
+function getDateRange (date: Moment): IDateRange {
   const cached = find(dateRanges, ({start, end}) => {
     return date.isSameOrAfter(start) && date.isSameOrBefore(end);
   });
@@ -60,7 +61,7 @@ function getDateRange (date: Moment): DateRange {
  * Normalize requested record into ready-to-save MarkSix object
  * @private
  */
-function normalize (record: GetJSON.Record): IMarkSix {
+function normalize (record: IRecord): IMarkSix {
   const {date, id, no, sno} = record;
   return {
     date: moment(date, dataDateFormat).format(config.dateFormat),
