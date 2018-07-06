@@ -12,8 +12,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "fetch": "node scripts/fetch.js",
-    "stats": "node scripts/stats.js",
+    "fetch": "node dist/scripts/fetch.js",
+    "stats": "node dist/scripts/stats.js",
     "lint": "tslint --project tsconfig.json --config tslint.json"
   },
   "dependencies": {

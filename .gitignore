@@ -114,4 +114,4 @@ Temporary Items
 data/records/
 
 # Compiled JavaScript files
-*.js
+dist/
