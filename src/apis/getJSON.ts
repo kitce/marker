@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Promise from 'bluebird';
-import _debug from 'debug';
+import Debug from 'debug';
 import {Cache} from 'memory-cache';
 import ms from 'ms';
 import hash from 'object-hash';
@@ -9,10 +9,10 @@ import {stringify} from 'querystring';
 import config from '../config/config';
 import {host} from '../constants/hkjc';
 
-const debug = _debug('marker:api:getJSON');
+const debug = Debug('marker:api:getJSON');
 
 /**
- * Typing
+ * Typings
  */
 type CommaSeparatedNumber = string; // number separated by comma between each 3 digits
 

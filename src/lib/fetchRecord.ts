@@ -1,4 +1,4 @@
-import _debug from 'debug';
+import Debug from 'debug';
 import find from 'lodash/find';
 import toNumber from 'lodash/toNumber';
 import moment, {Moment} from 'moment';
@@ -6,7 +6,7 @@ import getJSON, {IQuery, IRecord} from '../apis/getJSON';
 import config from '../config/config';
 import {IMarkSix} from '../models/mark-six.model';
 
-const debug = _debug('marker:lib:fetchRecord');
+const debug = Debug('marker:lib:fetchRecord');
 
 const urlDateFormat = 'YYYYMMDD';
 const dataDateFormat = 'DD/MM/YYYY';

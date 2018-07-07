@@ -1,5 +1,5 @@
 import Bluebird from 'bluebird';
-import _debug from 'debug';
+import Debug from 'debug';
 import {readdir, readFile, writeFile} from 'fs';
 import _ from 'lodash';
 import find from 'lodash/find';
@@ -8,7 +8,7 @@ import config from '../config/config';
 import fetchRecord from '../lib/fetchRecord';
 import MarkSix from '../models/mark-six.model';
 
-const debug = _debug('marker:script:fetch');
+const debug = Debug('marker:script:fetch');
 
 const readdirAsync: any = Bluebird.promisify(readdir);
 const readFileAsync: any = Bluebird.promisify(readFile);
