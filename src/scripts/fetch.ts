@@ -27,14 +27,14 @@ const writeFileAsync: any = Bluebird.promisify(writeFile);
         console.log(`${displayDate}, no draw`);
         addDate(noDrawDates, missingDate);
         debug('no. of no draw dates :', noDrawDates.length);
-        await saveNoDrawDates(noDrawDates);
-        debug('updated no draw dates list');
       } else {
         const markSix = await MarkSix.init(data).save();
         console.log(`${markSix.date}, saved ${markSix.id} to ${markSix.filename}`);
         markSixes.push(markSix);
       }
     }
+    await saveNoDrawDates(noDrawDates);
+    debug('updated no draw dates list');
     console.log(`Successfully fetched ${markSixes.length} Mark Six records`);
   } catch (err) {
     console.error(err);
