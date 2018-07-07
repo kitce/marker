@@ -7,7 +7,7 @@ interface IAccumulation {
   percentage?: number;
 }
 
-const allNumbers = _.times(49, index => index + 1);
+const numbers = _.times(49, index => index + 1);
 
 (async () => {
   try {
@@ -24,7 +24,7 @@ const allNumbers = _.times(49, index => index + 1);
     accumulatedSpecialNumbers = addPercentageAndSort(accumulatedSpecialNumbers, total);
     // numbers that do not exist in last 10 draws
     const numbersInLast10 = mapLatestMarkSixesToNumbers(markSixes, 10);
-    const numbersNotInLast10 = _.difference(allNumbers, numbersInLast10);
+    const numbersNotInLast10 = _.difference(numbers, numbersInLast10);
     const stats = {
       total,
       numbers: accumulatedNumbers,
