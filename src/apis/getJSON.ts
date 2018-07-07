@@ -122,7 +122,7 @@ function getURL (query: IQuery): string {
  */
 function getQuery (query: IQuery): IQuery {
   const defaults = {
-    sb: 0
+    sb: Snowball.No
   };
   return {
     ...defaults,
