@@ -38,8 +38,6 @@ const writeFileAsync: any = Bluebird.promisify(writeFile);
     console.log(`Successfully fetched ${markSixes.length} Mark Six records`);
   } catch (err) {
     console.error(err);
-  } finally {
-    process.exit(0);
   }
 })();
 
