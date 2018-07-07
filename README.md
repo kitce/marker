@@ -79,7 +79,7 @@ $ node dist/scripts/stats.js
   numbers:
    [ { num: 9, count: 461, percentage: 0.136 },
      { num: 22, count: 460, percentage: 0.135 },
-     { number: 33, count: 455, percentage: 0.134 },
+     { num: 33, count: 455, percentage: 0.134 },
      ... ],
   specials:
    [ { num: 14, count: 94, percentage: 0.027 },
