@@ -86,7 +86,7 @@ $ node dist/scripts/stats.js
      { num: 10, count: 89, percentage: 0.026 },
      { num: 38, count: 83, percentage: 0.024 },
      ... ],
-  numbersNotInLast10:: [ 4, 11, 14, 15, 19, 25, 26, 27, 36, 37, 43, 44, 47 ] }
+  numbersNotInLast10: [ 4, 11, 14, 15, 19, 25, 26, 27, 36, 37, 43, 44, 47 ] }
 ✨  Done in 0.41s.
 ```
 
