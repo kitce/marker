@@ -36,8 +36,10 @@ const writeFileAsync: any = Bluebird.promisify(writeFile);
     await saveNoDrawDates(noDrawDates);
     debug('updated no draw dates list');
     console.log(`Successfully fetched ${markSixes.length} Mark Six records`);
+    process.exit(0);
   } catch (err) {
     console.error(err);
+    process.exit(1);
   }
 })();
 

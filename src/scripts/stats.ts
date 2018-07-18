@@ -32,8 +32,10 @@ const numbers = _.times(49, index => index + 1);
       numbersNotInLast10
     };
     console.log(stats);
+    process.exit(0);
   } catch (err) {
     console.error(err);
+    process.exit(1);
   }
 })();
 
