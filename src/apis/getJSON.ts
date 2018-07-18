@@ -55,6 +55,14 @@ export interface IRecord {
 
 const cache = new Cache();
 
+const api = axios.create({
+  baseURL: `${host}/marksix/`,
+  headers: {
+    'User-Agent': config.userAgent,
+    'Accept-Encoding': 'gzip, deflate'
+  }
+});
+
 /**
  * Request MarkSix records JSON
  *
@@ -63,21 +71,17 @@ const cache = new Cache();
  * @returns {Promise<IRecord[]>}
  */
 export default (query: IQuery): Promise<IRecord[]> => {
+  const url = 'getJSON.aspx';
   const _query = getQuery(query);
   debug(_query);
-  const queryHash = hash(query);
+  const queryHash = hash(_query);
   const cached = cache.get(queryHash) as IRecord[];
   if (cached) {
     debug('cache found', queryHash);
     return Promise.resolve(cached);
   }
-  const url = getURL(_query);
-  const request = {
-    headers: {
-      'User-Agent': config.userAgent,
-      'Accept-Encoding': 'gzip, deflate'
-    }
-  };
+  const config = {params: _query};
+  const fetch = () => api.get(url, config);
   const retry = {
     retries: 5,
     factor: 1.2,
@@ -93,7 +97,6 @@ export default (query: IQuery): Promise<IRecord[]> => {
     }
   };
   debug('fetching', url);
-  const fetch = () => axios.get(url, request);
   const attempt = pRetry(fetch, retry);
   return Promise.resolve(attempt)
     .then(res => res.data)
