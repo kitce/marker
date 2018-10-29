@@ -1,12 +1,11 @@
-import axios from 'axios';
-import Promise from 'bluebird';
+import Bluebird from 'bluebird';
 import Debug from 'debug';
+import find from 'lodash/find';
 import {Cache} from 'memory-cache';
 import ms from 'ms';
 import hash from 'object-hash';
-import pRetry from 'p-retry';
-import {stringify} from 'querystring';
-import config from '../config/config';
+import puppeteer from 'puppeteer';
+import {URL, URLSearchParams} from 'url';
 import {host} from '../constants/hkjc';
 
 const debug = Debug('marker:api:getJSON');
@@ -53,54 +52,53 @@ export interface IRecord {
   p7u: CommaSeparatedNumber;
 }
 
+const baseURL = `${host}/marksix/getJSON.aspx`;
 const cache = new Cache();
-
-const api = axios.create({
-  baseURL: `${host}/marksix/`,
-  headers: {
-    'User-Agent': config.userAgent,
-    'Accept-Encoding': 'gzip, deflate'
-  }
-});
 
 /**
  * Request MarkSix records JSON
  *
  * @public
- * @param {IQuery} query
- * @returns {Promise<IRecord[]>}
+ * @param {*} query The query object
+ * @returns {Bluebird<IRecord[]>}
  */
-export default (query: IQuery): Promise<IRecord[]> => {
-  const url = 'getJSON.aspx';
+export default (query: any): Bluebird<IRecord[]> => {
   const _query = getQuery(query);
-  debug(_query);
   const queryHash = hash(_query);
   const cached = cache.get(queryHash) as IRecord[];
   if (cached) {
     debug('cache found', queryHash);
-    return Promise.resolve(cached);
+    return Bluebird.resolve(cached);
   }
-  const config = {params: _query};
-  const fetch = () => api.get(url, config);
-  const retry = {
-    retries: 5,
-    factor: 1.2,
-    minTimeout: ms('1 second'),
-    maxTimeout: ms('5 seconds'),
-    onFailedAttempt (err: any) {
-      console.warn(
-        'Failed to fetch JSON\n' +
-        `Error : ${err.message}\n` +
-        `URL : ${url}\n` +
-        `Attempts : ${err.attemptNumber}/${this.retries}`
-      );
-    }
-  };
-  debug('fetching', url);
-  const attempt = pRetry(fetch, retry);
-  return Promise.resolve(attempt)
-    .then(res => res.data)
-    .tap(data => putCache(queryHash, data));
+
+  return new Bluebird(async (resolve, reject) => {
+    const url = getURL(_query);
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    debug('fetching', url);
+    await page.goto(url);
+    page.on('response', async (response) => {
+      const request = response.request();
+      const method = request.method();
+      if (method === 'GET') {
+        const requestHeaders = request.headers();
+        const responseHeaders = response.headers();
+        const cookies = await page.cookies();
+        const botMitigationCookie = find(cookies, ({name}) => name.startsWith('BotMitigationCookie'));
+        if (botMitigationCookie) {
+          try {
+            const records = await response.json() as IRecord[];
+            putCache(queryHash, records);
+            resolve(records);
+          } catch (err) {
+            resolve([]);
+          }
+          await browser.close();
+        }
+      }
+    });
+    page.on('error', reject);
+  });
 };
 
 /**
@@ -111,19 +109,20 @@ export default (query: IQuery): Promise<IRecord[]> => {
  * @returns {string}
  */
 function getURL (query: IQuery): string {
-  const url = `${host}/marksix/getJSON.aspx`;
-  const _query = stringify(query);
-  return `${url}?${_query}`;
+  const url = new URL(baseURL);
+  const urlSearchParams = new URLSearchParams(query as any);
+  url.search = urlSearchParams.toString();
+  return url.href;
 }
 
 /**
  * Get the query object with default query options
  *
  * @private
- * @param {IQuery} query The query object
+ * @param {*} query The query object
  * @returns {IQuery}
  */
-function getQuery (query: IQuery): IQuery {
+function getQuery (query: any): IQuery {
   const defaults = {
     sb: Snowball.No
   };
