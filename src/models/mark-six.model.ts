@@ -1,12 +1,12 @@
-import Promise from 'bluebird';
+import Bluebird from 'bluebird';
 import {readdir, readFile, writeFile} from 'fs';
 import _ from 'lodash';
 import path from 'path';
 import config from '../config/config';
 
-const readdirAsync: any = Promise.promisify(readdir);
-const readFileAsync: any = Promise.promisify(readFile);
-const writeFileAsync: any = Promise.promisify(writeFile);
+const readdirAsync: any = Bluebird.promisify(readdir);
+const readFileAsync: any = Bluebird.promisify(readFile);
+const writeFileAsync: any = Bluebird.promisify(writeFile);
 
 export interface IMarkSix {
   date: string;
@@ -32,10 +32,10 @@ class MarkSix implements IMarkSix {
    * Find all stored records
    *
    * @static
-   * @returns {Promise<MarkSix[]>}
+   * @returns {Bluebird<MarkSix[]>}
    * @memberof MarkSix
    */
-  static findAll (): Promise<MarkSix[]> {
+  static findAll (): Bluebird<MarkSix[]> {
     return readdirAsync(config.recordsDirectory)
       .map((filename: string) => this.get(filename));
   }
@@ -46,10 +46,10 @@ class MarkSix implements IMarkSix {
    * @private
    * @static
    * @param {string} filename
-   * @returns {Promise<MarkSix>}
+   * @returns {Bluebird<MarkSix>}
    * @memberof MarkSix
    */
-  private static get (filename: string): Promise<MarkSix> {
+  private static get (filename: string): Bluebird<MarkSix> {
     const filePath = getFilePath(filename);
     return readFileAsync(filePath)
       .then((json: string) => JSON.parse(json))
