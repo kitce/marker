@@ -135,7 +135,8 @@ class MarkSix implements IMarkSix {
    * @memberof MarkSix
    */
   private sort (): this {
-    this.numbers = this.numbers.sort();
+    const comparator = (a: number, b: number) => (a - b);
+    this.numbers = this.numbers.sort(comparator);
     return this;
   }
 
