@@ -4,7 +4,7 @@ import find from 'lodash/find';
 import {Cache} from 'memory-cache';
 import ms from 'ms';
 import hash from 'object-hash';
-import puppeteer from 'puppeteer';
+import puppeteer, {Response} from 'puppeteer';
 import {URL, URLSearchParams} from 'url';
 import {host} from '../constants/hkjc';
 
@@ -77,12 +77,11 @@ export default (query: any): Bluebird<IRecord[]> => {
     const page = await browser.newPage();
     debug('fetching', url);
     await page.goto(url);
-    page.on('response', async (response) => {
+    page.on('response', async (response: Response) => {
       const request = response.request();
+      const status = response.status();
       const method = request.method();
-      if (method === 'GET') {
-        const requestHeaders = request.headers();
-        const responseHeaders = response.headers();
+      if (method === 'GET' && status !== 302) {
         const cookies = await page.cookies();
         const botMitigationCookie = find(cookies, ({name}) => name.startsWith('BotMitigationCookie'));
         if (botMitigationCookie) {
